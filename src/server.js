@@ -4,13 +4,20 @@ const app = express();
 app.use(express.json())
 
 const db = new Sequelize({
-    dialect:'postgres',
-    host:'localhost',
-    database:'data',
-    username:'postgres',
-    password:'sherzod',
-    logging:false
-});
+    database: 'data_nzoq',
+    username: 'sherzod',
+    password: 'ywyhg8HDfI9rSwB1XZhI8GJJg6NL9h8O',
+    host: 'dpg-cjmq5l7jbvhs73dp8bjg-a.oregon-postgres.render.com',
+    port: 5432,
+    dialect: 'postgres',
+    logging:false,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false 
+      }
+    }
+  });
 
 const Products = db.define("products", {
     id:{
@@ -59,10 +66,6 @@ try {
     })
     app.put('/users/:id', async (req,res) => {
         const {product_name,product_price} = req.body;
-        // const user = await Products.findOne({where:{id:req.params.id}});
-        // user.product_name = product_name;
-        // user.product_price = product_price;
-        // await user.save()
         const user = await Products.update({product_name:product_name,product_price:product_price},{
             where:{
                 id:req.params.id
